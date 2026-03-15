@@ -6,17 +6,17 @@ class TodosController < ApplicationController
     @todos = current_user.todos
 
     @todos = case params[:filter]
-             when "completed"   then @todos.complete
-             when "incomplete"  then @todos.incomplete
-             when "overdue"     then @todos.overdue
-             else                    @todos.incomplete
-             end
+    when "completed"   then @todos.complete
+    when "incomplete"  then @todos.incomplete
+    when "overdue"     then @todos.overdue
+    else                    @todos.incomplete
+    end
 
     @todos = case params[:sort]
-             when "due_date"  then @todos.by_due_date
-             when "priority"  then @todos.by_priority
-             else                  @todos.order(created_at: :desc)
-             end
+    when "due_date"  then @todos.by_due_date
+    when "priority"  then @todos.by_priority
+    else                  @todos.order(created_at: :desc)
+    end
 
     @filter = params[:filter] || "incomplete"
     @sort   = params[:sort]   || "created_at"
