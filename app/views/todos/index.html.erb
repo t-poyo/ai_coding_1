@@ -1,0 +1,42 @@
+<% content_for :title, "Todo一覧" %>
+
+<div class="page-header">
+  <h1>Todo一覧</h1>
+  <%= link_to "新しいTodoを追加", new_todo_path, class: "btn btn-primary" %>
+</div>
+
+<div class="toolbar">
+  <div class="filter-tabs">
+    <%= link_to "未完了", todos_path(filter: "incomplete", sort: @sort),
+        class: "tab #{'active' if @filter == 'incomplete'}" %>
+    <%= link_to "完了済み", todos_path(filter: "completed", sort: @sort),
+        class: "tab #{'active' if @filter == 'completed'}" %>
+    <%= link_to "期限切れ", todos_path(filter: "overdue", sort: @sort),
+        class: "tab #{'active' if @filter == 'overdue'}" %>
+    <%= link_to "すべて", todos_path(filter: "all", sort: @sort),
+        class: "tab #{'active' if @filter == 'all'}" %>
+  </div>
+
+  <div class="sort-options">
+    <span class="sort-label">並び順:</span>
+    <%= link_to "作成日", todos_path(filter: @filter, sort: "created_at"),
+        class: "sort-btn #{'active' if @sort == 'created_at'}" %>
+    <%= link_to "優先度", todos_path(filter: @filter, sort: "priority"),
+        class: "sort-btn #{'active' if @sort == 'priority'}" %>
+    <%= link_to "期限日", todos_path(filter: @filter, sort: "due_date"),
+        class: "sort-btn #{'active' if @sort == 'due_date'}" %>
+  </div>
+</div>
+
+<div class="todos-list" id="todos-list">
+  <% if @todos.empty? %>
+    <div class="empty-state">
+      <p>Todoはありません</p>
+      <%= link_to "最初のTodoを作成する", new_todo_path, class: "btn btn-primary" %>
+    </div>
+  <% else %>
+    <% @todos.each do |todo| %>
+      <%= render partial: "todo", locals: { todo: todo } %>
+    <% end %>
+  <% end %>
+</div>

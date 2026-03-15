@@ -1,0 +1,42 @@
+<div id="todo_<%= todo.id %>" class="todo-card <%= 'completed' if todo.completed? %> <%= 'overdue' if todo.overdue? %> priority-<%= todo.priority %>">
+  <div class="todo-checkbox">
+    <%= button_to toggle_complete_todo_path(todo),
+        method: :patch,
+        class: "checkbox-btn #{'checked' if todo.completed?}",
+        data: { turbo_stream: true } do %>
+      <% if todo.completed? %>
+        <svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+      <% end %>
+    <% end %>
+  </div>
+
+  <div class="todo-content">
+    <div class="todo-header">
+      <h3 class="todo-title"><%= todo.title %></h3>
+      <span class="priority-badge priority-<%= todo.priority %>">
+        <%= { "low" => "低", "medium" => "中", "high" => "高" }[todo.priority] %>
+      </span>
+    </div>
+
+    <% if todo.description.present? %>
+      <p class="todo-description"><%= todo.description %></p>
+    <% end %>
+
+    <div class="todo-meta">
+      <% if todo.due_date.present? %>
+        <span class="due-date <%= 'overdue-text' if todo.overdue? %>">
+          期限: <%= todo.due_date.strftime("%Y年%m月%d日") %>
+          <% if todo.overdue? %> (期限切れ)<% end %>
+        </span>
+      <% end %>
+      <span class="created-at">作成: <%= todo.created_at.strftime("%Y/%m/%d") %></span>
+    </div>
+  </div>
+
+  <div class="todo-actions">
+    <%= link_to "編集", edit_todo_path(todo), class: "btn btn-sm btn-outline" %>
+    <%= button_to "削除", todo_path(todo), method: :delete,
+        class: "btn btn-sm btn-danger",
+        data: { turbo_confirm: "本当に削除しますか？" } %>
+  </div>
+</div>

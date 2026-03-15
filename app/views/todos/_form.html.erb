@@ -1,0 +1,42 @@
+<%= form_with model: todo, class: "todo-form" do |f| %>
+  <% if todo.errors.any? %>
+    <div class="error-messages">
+      <h4><%= todo.errors.count %>個のエラーがあります</h4>
+      <ul>
+        <% todo.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :title, "タイトル *" %>
+    <%= f.text_field :title, placeholder: "Todoのタイトルを入力", class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :description, "詳細" %>
+    <%= f.text_area :description, placeholder: "詳細を入力（任意）", rows: 3, class: "form-control" %>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <%= f.label :due_date, "期限日" %>
+      <%= f.date_field :due_date, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :priority, "優先度 *" %>
+      <%= f.select :priority,
+          [["低", "low"], ["中", "medium"], ["高", "high"]],
+          { include_blank: "選択してください" },
+          class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <%= f.submit todo.new_record? ? "作成する" : "更新する", class: "btn btn-primary" %>
+    <%= link_to "キャンセル", todos_path, class: "btn btn-outline" %>
+  </div>
+<% end %>

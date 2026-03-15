@@ -1,0 +1,47 @@
+<% content_for :title, @todo.title %>
+
+<div class="page-header">
+  <h1><%= @todo.title %></h1>
+  <div>
+    <%= link_to "編集", edit_todo_path(@todo), class: "btn btn-outline" %>
+    <%= link_to "一覧へ戻る", todos_path, class: "btn btn-outline" %>
+  </div>
+</div>
+
+<div class="todo-detail-card">
+  <div class="detail-row">
+    <span class="detail-label">ステータス</span>
+    <span class="status-badge <%= @todo.completed? ? 'completed' : 'incomplete' %>">
+      <%= @todo.completed? ? "完了" : "未完了" %>
+    </span>
+  </div>
+
+  <div class="detail-row">
+    <span class="detail-label">優先度</span>
+    <span class="priority-badge priority-<%= @todo.priority %>">
+      <%= { "low" => "低", "medium" => "中", "high" => "高" }[@todo.priority] %>
+    </span>
+  </div>
+
+  <% if @todo.due_date.present? %>
+    <div class="detail-row">
+      <span class="detail-label">期限日</span>
+      <span class="<%= 'overdue-text' if @todo.overdue? %>">
+        <%= @todo.due_date.strftime("%Y年%m月%d日") %>
+        <% if @todo.overdue? %><span class="badge badge-danger">期限切れ</span><% end %>
+      </span>
+    </div>
+  <% end %>
+
+  <% if @todo.description.present? %>
+    <div class="detail-row detail-description">
+      <span class="detail-label">詳細</span>
+      <p><%= @todo.description %></p>
+    </div>
+  <% end %>
+
+  <div class="detail-row">
+    <span class="detail-label">作成日</span>
+    <span><%= @todo.created_at.strftime("%Y年%m月%d日 %H:%M") %></span>
+  </div>
+</div>
